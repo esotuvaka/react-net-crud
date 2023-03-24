@@ -177,72 +177,76 @@ const CRUD = () => {
 	return (
 		<Fragment>
 			<ToastContainer />
-			<Container>
-				<Row>
-					<Col>
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Enter name"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-						/>
-					</Col>
-					<Col>
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Enter age"
-							value={age}
-							onChange={(e) => setAge(e.target.value)}
-						/>
-					</Col>
-					<Col>
-						<input
-							type="checkbox"
-							checked={isActive === 1 ? true : false}
-							onChange={(e) => handleActiveChange(e)}
-							value={isActive}
-						/>
-						<label>IsActive</label>
-					</Col>
-					<Col>
-						<button className="btn btn-primary" onClick={() => handleSubmit()}>
-							Submit
-						</button>
-					</Col>
-				</Row>
-			</Container>
-			<br />
-			<Table striped bordered hover variant="dark">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th colSpan={2}>Name</th>
-						<th>Age</th>
-						<th>isActive</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{data && data.length > 0
-						? data.map((item, index) => {
+
+			<div className="flex justify-between items-center mb-4">
+				<div className="flex-grow mr-4">
+					<input
+						type="text"
+						className="w-full rounded-md  border-gray-400 border py-2 px-3"
+						placeholder="Enter name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+				</div>
+				<div className="flex-grow mr-4">
+					<input
+						type="text"
+						className="w-full rounded-md border-gray-400 border py-2 px-3"
+						placeholder="Enter age"
+						value={age}
+						onChange={(e) => setAge(e.target.value)}
+					/>
+				</div>
+				<div className="flex-grow mr-4">
+					<input
+						type="checkbox"
+						checked={isActive === 1 ? true : false}
+						onChange={(e) => handleActiveChange(e)}
+						value={isActive}
+						className="mr-2 leading-tight"
+					/>
+					<label className="text-sm">IsActive</label>
+				</div>
+				<div className="flex-grow">
+					<button
+						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						onClick={() => handleSubmit()}
+					>
+						Submit
+					</button>
+				</div>
+			</div>
+			<div className="table-responsive">
+				<table className="table-fixed w-full">
+					<thead>
+						<tr>
+							<th className="w-1/6">ID</th>
+							<th className="w-2/6">Name</th>
+							<th className="w-1/6">Age</th>
+							<th className="w-1/6">isActive</th>
+							<th className="w-1/6">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{data && data.length > 0 ? (
+							data.map((item, index) => {
 								return (
 									<tr key={index}>
-										<td>{item.id}</td>
-										<td colSpan={2}>{item.name}</td>
-										<td>{item.age}</td>
-										{item.isActive ? <td>Yes</td> : <td>No</td>}
-										<td colSpan={2}>
+										<td className="py-2 px-4">{item.id}</td>
+										<td className="py-2 px-4">{item.name}</td>
+										<td className="py-2 px-4">{item.age}</td>
+										<td className="py-2 px-4">
+											{item.isActive ? "Yes" : "No"}
+										</td>
+										<td className="py-2 px-4">
 											<button
-												className="btn btn-primary"
+												className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
 												onClick={() => handleEdit(item.id)}
 											>
 												Edit
-											</button>{" "}
-											&nbsp;
+											</button>
 											<button
-												className="btn btn-danger"
+												className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 												onClick={() => handleDelete(item.id)}
 											>
 												Delete
@@ -250,54 +254,99 @@ const CRUD = () => {
 										</td>
 									</tr>
 								);
-						  })
-						: "Loading"}
-				</tbody>
-			</Table>
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Edit Account</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Row>
-						<Col>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Enter name"
-								value={editName}
-								onChange={(e) => setEditName(e.target.value)}
-							/>
-						</Col>
-						<Col>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Enter age"
-								value={editAge}
-								onChange={(e) => setEditAge(e.target.value)}
-							/>
-						</Col>
-						<Col>
-							<input
-								type="checkbox"
-								checked={isActive === 1 ? true : false}
-								onChange={(e) => handleEditActiveChange(e)}
-								value={editIsActive}
-							/>
-							<label>IsActive</label>
-						</Col>
-					</Row>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={handleUpdate}>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-			</Modal>
+							})
+						) : (
+							<tr>
+								<td className="py-2 px-4 col-span-5">Loading</td>
+							</tr>
+						)}
+					</tbody>
+				</table>
+			</div>
+			<div
+				className={`fixed z-10 inset-0 overflow-y-auto ${show ? "" : "hidden"}`}
+			>
+				<div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+					<div className="fixed inset-0 transition-opacity" aria-hidden="true">
+						<div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+					</div>
+
+					<div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+						<div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+							<h3 className="text-lg leading-6 font-medium text-gray-900">
+								Edit Account
+							</h3>
+							<div className="mt-2">
+								<div className="grid grid-cols-6 gap-6">
+									<div className="col-span-6 sm:col-span-3">
+										<label
+											htmlFor="editName"
+											className="block text-sm font-medium text-gray-700"
+										>
+											Name
+										</label>
+										<input
+											type="text"
+											name="editName"
+											id="editName"
+											value={editName}
+											onChange={(e) => setEditName(e.target.value)}
+											className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+											placeholder="Enter name"
+										/>
+									</div>
+
+									<div className="col-span-6 sm:col-span-3">
+										<label
+											htmlFor="editAge"
+											className="block text-sm font-medium text-gray-700"
+										>
+											Age
+										</label>
+										<input
+											type="text"
+											name="editAge"
+											id="editAge"
+											value={editAge}
+											onChange={(e) => setEditAge(e.target.value)}
+											className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+											placeholder="Enter age"
+										/>
+									</div>
+
+									<div className="col-span-6 sm:col-span-3">
+										<div className="flex items-center">
+											<input
+												type="checkbox"
+												name="editIsActive"
+												id="editIsActive"
+												checked={editIsActive === 1}
+												onChange={(e) => handleEditActiveChange(e)}
+												className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+											/>
+											<label
+												htmlFor="editIsActive"
+												className="ml-2 block text-sm text-gray-900"
+											>
+												IsActive
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+							<button
+								type="button"
+								className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
+								onClick={handleUpdate}
+							>
+								Save Changes
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</Fragment>
 	);
 };
